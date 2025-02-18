@@ -1,6 +1,11 @@
-import {getRandomNumber} from './util.js';
-import {NAMES, COMMENTS} from './const.js';
+import {getRandomNumber, getRandomElement} from './utils.js';
 
+const NAMES = ['Иван', 'Мария', 'Юлия', 'Лола', 'Дима', 'Артемий'];
+const COMMENTS = ['Всё отлично!','В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 const MIN_LIKES = 15;
 const MAX_LIKES = 200;
 const MIN_AVATAR_ID = 1;
@@ -11,8 +16,6 @@ const NUM_OBJECTS = 25;
 
 let photoId = 0;
 let commentId = 0;
-
-const getRandomElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
 const createComment = () => {
   commentId++;
@@ -40,6 +43,6 @@ const createPhoto = () => {
   };
 };
 
-const photoObjects = Array.from({ length: NUM_OBJECTS }, createPhoto);
+const createPhotos = () => Array.from({ length: NUM_OBJECTS }, createPhoto);
 
-export {photoObjects};
+export {createPhotos};
