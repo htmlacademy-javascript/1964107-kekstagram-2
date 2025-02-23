@@ -31,3 +31,20 @@ const removeNumber = (stroke) => {
 };
 
 removeNumber('futyn');
+
+const getTime = (startWorking, endWorking, startMeet, lengthMeet) => {
+
+  function getTimeToMinutes(timeString) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    return (hours * 60) + minutes;
+  }
+
+  const workStartMin = getTimeToMinutes(startWorking);
+  const workEndMin = getTimeToMinutes(endWorking);
+  const meetStartMin = getTimeToMinutes(startMeet);
+  const meetEndMin = meetStartMin + lengthMeet;
+
+  return meetStartMin >= workStartMin && meetEndMin <= workEndMin;
+};
+
+console.log(getTime('08:00', '17:30', '14:00', 90));
