@@ -32,13 +32,13 @@ const removeNumber = (stroke) => {
 
 removeNumber('futyn');
 
+const getTimeToMinutes = (timeString) => {
+  const [hours, minutes] = timeString.split(':').map(Number);
+
+  return (hours * 60) + minutes;
+};
+
 const getTime = (startWorking, endWorking, startMeet, lengthMeet) => {
-
-  function getTimeToMinutes(timeString) {
-    const [hours, minutes] = timeString.split(':').map(Number);
-    return (hours * 60) + minutes;
-  }
-
   const workStartMin = getTimeToMinutes(startWorking);
   const workEndMin = getTimeToMinutes(endWorking);
   const meetStartMin = getTimeToMinutes(startMeet);
