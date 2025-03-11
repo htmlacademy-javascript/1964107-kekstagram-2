@@ -45,4 +45,4 @@ const createPhoto = () => {
 
 const createPhotos = () => Array.from({ length: NUM_OBJECTS }, createPhoto);
 
-export {createPhotos};
+export { createPhotos };
