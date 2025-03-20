@@ -1,4 +1,9 @@
 import { createPhotos } from './create-array-photo.js';
-import { getThumbnails } from './thumbnails.js';
+import { renderThumbnails } from './thumbnails.js';
+import { openModalPicture, closeModalPicture } from './big-picture.js';
 
-getThumbnails(createPhotos());
+
+export const photos = createPhotos();
+renderThumbnails(photos);
+openModalPicture(photos);
+closeModalPicture();
