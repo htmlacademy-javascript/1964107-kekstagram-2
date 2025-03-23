@@ -60,7 +60,7 @@ function closeModalUser () {
 }
 
 const onPictureContainerClick = (evt, photos) => {
-  const picture = evt.target.closest('a');
+  const picture = evt.target.closest('.picture');
 
   if (!picture) {
     return;
