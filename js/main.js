@@ -1,4 +1,8 @@
 import { createPhotos } from './create-array-photo.js';
-import { getThumbnails } from './thumbnails.js';
+import { renderThumbnails } from './thumbnails.js';
+import { initPreviewPictures } from './big-picture.js';
 
-getThumbnails(createPhotos());
+
+const photos = createPhotos();
+renderThumbnails(photos);
+initPreviewPictures(photos);
