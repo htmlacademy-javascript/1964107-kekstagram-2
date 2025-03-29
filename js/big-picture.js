@@ -37,6 +37,7 @@ const renderComments = (photo) => {
 };
 
 const onDocumentKeydown = (evt) => {
+
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeModalUser();

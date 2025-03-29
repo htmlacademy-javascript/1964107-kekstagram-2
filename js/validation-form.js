@@ -1,35 +1,24 @@
-import { isEscapeKey } from './utils';
+const form = document.querySelector('.img-upload__form');
+//const hashTagInput = form.querySelector('.text__hashtags');
+const commentInput = form.querySelector('.text__description');
 
-const uploadForm = document.querySelector('.img-upload__form');
-const uploadInput = uploadForm.querySelector('.img-upload__input');
-const uploadOwerlay = uploadForm.querySelector('.img-upload__overlay');
-const body = document.querySelector('body');
-const closeButton = uploadForm.querySelector('.img-upload__cancel');
+const pristine = new Pristine(form, {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--error',
+  errorTextParent: 'img-upload__field-wrapper',
+});
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeUploadPicture();
-  }
-};
-
-const uploadPicture = () => {
-  uploadOwerlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-
-  document.addEventListener('keydown', onDocumentKeydown);
-};
-
-function closeUploadPicture () {
-  uploadOwerlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-  uploadInput.value = '';
-  document.removeEventListener('keydown', onDocumentKeydown);
+function isValidComment (value) {
+  return value.length <= 140;
 }
 
-const initUploadPicture = () => {
-  uploadInput.addEventListener('change', uploadPicture);
-  closeButton.addEventListener('click', closeUploadPicture);
+const getValidation = () => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    pristine.validate();
+  });
 };
 
-export { initUploadPicture };
+pristine.addValidator(commentInput, isValidComment, 'Максимально 140 символов');
+
+export { getValidation };
