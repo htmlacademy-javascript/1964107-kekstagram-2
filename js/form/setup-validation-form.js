@@ -5,6 +5,7 @@ const RULES_HASH_TAGS = /^#[а-яa-zё0-9]{1,19}$/i;
 const MAX_SUM_TAGS = 5;
 const MAX_LENGTH_TAG = 20;
 const MAX_LENGTH_COMMENT = 140;
+
 let errorMessage = '';
 
 const pristine = new Pristine(form, {
