@@ -47,4 +47,4 @@ const getTime = (startWorking, endWorking, startMeet, lengthMeet) => {
   return meetStartMin >= workStartMin && meetEndMin <= workEndMin;
 };
 
-console.log(getTime('08:00', '17:30', '14:00', 90));
+export { getTime };

@@ -33,11 +33,11 @@ const renderComments = (photo) => {
     socialCommentsFragment.appendChild(commentFragment);
   });
 
-
   commentsContainer.append(socialCommentsFragment);
 };
 
 const onDocumentKeydown = (evt) => {
+
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeModalUser();
@@ -48,6 +48,8 @@ const openModal = (photo) => {
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
   renderModal(photo);
+  socialHidden.classList.add('hidden');
+  commentHidden.classList.add('hidden');
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
@@ -69,14 +71,12 @@ const onPictureContainerClick = (evt, photos) => {
   const thumbnailId = Number(picture.dataset.id);
   const currentPhoto = photos.find(({id}) => id === thumbnailId);
   commentsContainer.innerHTML = '';
-  renderComments(currentPhoto);
 
   if (!currentPhoto) {
     return;
   }
 
-  socialHidden.classList.add('hidden');
-  commentHidden.classList.add('hidden');
+  renderComments(currentPhoto);
   openModal(currentPhoto);
 };
 
