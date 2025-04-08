@@ -17,8 +17,6 @@ const setSizePictureBack = (value) => {
     const scaleStepResult = value - SIZE_STEP;
     scaleControl.value = `${scaleStepResult}%`;
     setTransformImage(scaleStepResult);
-  } else {
-    scaleControl.value = `${MIN_VALUE_SIZE}%`;
   }
 };
 
@@ -32,21 +30,26 @@ const setSizePictureNext = (value) => {
   }
 };
 
-const changeInputSize = (evt) => {
-  const scaleTextValue = Number(scaleControl.value.replace('%', ''));
-  const buttonNext = evt.target.closest('.scale__control--bigger');
-  const buttonBack = evt.target.closest('.scale__control--smaller');
+const onButtonClick = (evt) => {
+  const scaleTextValue = parseInt(scaleControl.value, 10);
+  const buttonPlus = evt.target.closest('.scale__control--bigger');
+  const buttonMinus = evt.target.closest('.scale__control--smaller');
 
-  if (buttonBack) {
+  if (buttonMinus) {
     setSizePictureBack(scaleTextValue);
-  } else if (buttonNext) {
+  } else if (buttonPlus) {
     setSizePictureNext(scaleTextValue);
   }
 };
 
-const initChangeSizeImage = () => {
-  changeButtonWrapper.addEventListener('click', changeInputSize);
+const resetImageSizeValue = () => {
+  scaleControl.value = `${MAX_VALUE_SIZE}%`;
+  formImage.style.transform = 'scale(1)';
 };
 
-export { initChangeSizeImage };
+const initChangeSizeImage = () => {
+  changeButtonWrapper.addEventListener('click', onButtonClick);
+};
+
+export { initChangeSizeImage, resetImageSizeValue };
 
