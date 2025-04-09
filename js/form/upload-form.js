@@ -1,5 +1,7 @@
 import { isEscapeKey } from '../utils.js';
-import { setupValidation } from './setup-validation-form.js';
+import { setupValidation, resetValidation } from './setup-validation.js';
+import { initChangeSizeImage, resetImageSizeValue } from './picture-size-editing.js';
+import { initEffectSlider, resetFilter } from './range-bar-effect.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
@@ -22,6 +24,8 @@ const openForm = () => {
   uploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
+  initEffectSlider();
+  initChangeSizeImage();
 };
 
 function closeForm () {
@@ -30,6 +34,10 @@ function closeForm () {
   document.removeEventListener('keydown', onDocumentKeydown);
 
   uploadInput.value = '';
+  resetImageSizeValue();
+  uploadForm.reset();
+  resetFilter();
+  resetValidation();
 }
 
 const onButtonClick = () => closeForm();
@@ -41,7 +49,6 @@ const onUploadInputChange = () => {
 const initUploadForm = () => {
   uploadInput.addEventListener('change', onUploadInputChange);
   closeButton.addEventListener('click', onButtonClick);
-
   setupValidation();
 };
 
