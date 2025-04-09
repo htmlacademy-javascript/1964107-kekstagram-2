@@ -1,4 +1,4 @@
-const effectsObjectList = [{
+const effectsList = [{
   name: 'none',
   effect: 'none',
   min: 0,
@@ -54,4 +54,4 @@ const effectsObjectList = [{
 },
 ];
 
-export { effectsObjectList };
+export { effectsList };

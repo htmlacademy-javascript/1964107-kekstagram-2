@@ -1,25 +1,32 @@
-import { effectsObjectList } from './const-filter';
+import { effectsList } from './effects';
+
+const DEFAULT_EFFECT = effectsList[0];
 
 const form = document.querySelector('.img-upload__form');
 const slider = form.querySelector('.effect-level__slider');
 const imgWrapperEffect = form.querySelector('.img-upload__effects');
 const effectLevelValue = form.querySelector('.effect-level__value');
-const imgUploadStile = form.querySelector('.img-upload__preview img');
+const uploadedImg = form.querySelector('.img-upload__preview img');
 const sliderContainer = form.querySelector('.img-upload__effect-level');
-const DEFOLT_EFFECT = effectsObjectList[0];
-let currentEffect = DEFOLT_EFFECT;
+
+let currentEffect = DEFAULT_EFFECT;
 
 const openSlider = () => {
   sliderContainer.classList.remove('hidden');
 };
 
-const closeSlider = () => {
+const hideSlider = () => {
   sliderContainer.classList.add('hidden');
 };
 
-const isDefoltStyle = () => currentEffect.name === 'none';
+const isDefaultEffect = () => currentEffect.name === 'none';
 
-const UpdateEffect = () => {
+const updateEffect = () => {
+  if (isDefaultEffect()){
+    hideSlider();
+  } else {
+    openSlider();
+  }
   slider.noUiSlider.updateOptions({
     range: {
       'min': currentEffect.min,
@@ -28,12 +35,6 @@ const UpdateEffect = () => {
     start: currentEffect.start,
     step: currentEffect.step,
   });
-
-  if (isDefoltStyle()){
-    closeSlider();
-  } else {
-    openSlider();
-  }
 };
 
 const onSliderEffect = (evt) => {
@@ -42,40 +43,42 @@ const onSliderEffect = (evt) => {
   if(!target){
     return;
   }
-  currentEffect = effectsObjectList.find((element) => element.name === evt.target.value);
-  const styleEffect = currentEffect.effect;
-  imgUploadStile.style.filter = `${styleEffect}`;
-  UpdateEffect();
+
+  currentEffect = effectsList.find((element) => element.name === evt.target.value);
+  updateEffect();
 };
 
 const onUpdateEffect = () => {
   const sliderValue = slider.noUiSlider.get();
-
-  if (isDefoltStyle()) {
-    imgUploadStile.style.filter = DEFOLT_EFFECT.style;
-  }
-  imgUploadStile.style.filter = `${currentEffect.effect}(${sliderValue}${currentEffect.unit})`;
+  uploadedImg.style.filter = `${currentEffect.effect}(${sliderValue}${currentEffect.unit})`;
   effectLevelValue.value = sliderValue;
 };
 
-const resetFilter = () => {
-  currentEffect = DEFOLT_EFFECT;
-  imgUploadStile.style.filter = 'none';
-  UpdateEffect();
+const initSlider = () => {
+  noUiSlider.create(slider, {
+    range: {
+      'min': DEFAULT_EFFECT.min,
+      'max': DEFAULT_EFFECT.max,
+    },
+    start: DEFAULT_EFFECT.start,
+    step: DEFAULT_EFFECT.step,
+    connect: 'lower',
+  });
 };
 
-noUiSlider.create(slider, {
-  range: {
-    'min': DEFOLT_EFFECT.min,
-    'max': DEFOLT_EFFECT.max,
-  },
-  start: DEFOLT_EFFECT.start,
-  step: DEFOLT_EFFECT.step,
-  connect: 'lower',
-});
-closeSlider();
+const destroySlider = () => {
+  slider.noUiSlider.destroy();
+};
+
+const resetFilter = () => {
+  currentEffect = DEFAULT_EFFECT;
+  uploadedImg.style.filter = 'none';
+  destroySlider();
+};
 
 const initEffectSlider = () => {
+  initSlider();
+  hideSlider();
   imgWrapperEffect.addEventListener('change', onSliderEffect);
   slider.noUiSlider.on('update', onUpdateEffect);
 };
