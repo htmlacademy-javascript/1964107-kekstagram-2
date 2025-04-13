@@ -1,14 +1,14 @@
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const container = document.querySelector('.pictures');
 
-const createThumbnail = ({ comment, description, likes, url, id}) => {
+const createThumbnail = ({ comments, description, likes, url, id}) => {
   const thumbnail = template.cloneNode(true);
   const image = thumbnail.querySelector('.picture__img');
 
   image.src = url;
   image.alt = description;
   thumbnail.querySelector('.picture__likes').textContent = likes;
-  thumbnail.querySelector('.picture__comments').textContent = comment.length;
+  thumbnail.querySelector('.picture__comments').textContent = comments.length;
   thumbnail.dataset.id = id;
 
   return thumbnail;

@@ -1,9 +1,14 @@
-import { createPhotos } from './create-array-photo.js';
+import { getData } from './api.js';
 import { renderThumbnails } from './thumbnails.js';
 import { initPreviewPictures } from './big-picture.js';
 import { initUploadForm } from './form/upload-form.js';
+import { setErrorData } from './utils';
 
-const photos = createPhotos();
-renderThumbnails(photos);
-initPreviewPictures(photos);
+getData()
+  .then((fotos) => {
+    renderThumbnails(fotos);
+    initPreviewPictures(fotos);
+  })
+  .catch(() => setErrorData());
+
 initUploadForm();

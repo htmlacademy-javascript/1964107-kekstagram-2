@@ -52,4 +52,4 @@ const initUploadForm = () => {
   setupValidation();
 };
 
-export { initUploadForm };
+export { initUploadForm, closeForm };

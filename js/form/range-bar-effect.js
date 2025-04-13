@@ -17,6 +17,7 @@ const openSlider = () => {
 
 const hideSlider = () => {
   sliderContainer.classList.add('hidden');
+  uploadedImg.style.removeProperty('filter');
 };
 
 const isDefaultEffect = () => currentEffect.name === 'none';
