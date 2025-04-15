@@ -2,13 +2,13 @@ import { getData } from './api.js';
 import { renderThumbnails } from './thumbnails.js';
 import { initPreviewPictures } from './big-picture.js';
 import { initUploadForm } from './form/upload-form.js';
-import { setErrorData } from './utils';
+import { getDataError } from './form/popups-massages.js';
 
 getData()
-  .then((fotos) => {
-    renderThumbnails(fotos);
-    initPreviewPictures(fotos);
+  .then((photos) => {
+    renderThumbnails(photos);
+    initPreviewPictures(photos);
   })
-  .catch(() => setErrorData());
+  .catch(() => getDataError());
 
 initUploadForm();

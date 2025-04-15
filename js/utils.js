@@ -1,8 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 
-const dataError = document.querySelector('#data-error').content.querySelector('.data-error');
-const container = document.querySelector('body');
-
 const getRandomNumber = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -14,15 +11,6 @@ const getRandomNumber = (a, b) => {
 const getRandomElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
-
-const setErrorData = () => {
-  const error = dataError.cloneNode(true);
-  container.append(error);
-
-  setTimeout(() => {
-    error.remove();
-  }, ALERT_SHOW_TIME);
-};
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -45,4 +33,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {getRandomNumber, getRandomElement, isEscapeKey, showAlert, setErrorData };
+export {getRandomNumber, getRandomElement, isEscapeKey, showAlert };

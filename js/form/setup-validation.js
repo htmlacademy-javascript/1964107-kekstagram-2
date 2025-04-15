@@ -1,7 +1,3 @@
-import { closeForm } from './upload-form';
-import { sendData } from '../api';
-import { showAlert } from '../utils';
-
 const RULES_HASH_TAGS = /^#[а-яa-zё0-9]{1,19}$/i;
 const MAX_SUM_TAGS = 5;
 const MAX_LENGTH_TAG = 20;
@@ -10,7 +6,6 @@ const MAX_LENGTH_COMMENT = 140;
 const form = document.querySelector('.img-upload__form');
 const commentInput = form.querySelector('.text__description');
 const hashTagsInput = form.querySelector('.text__hashtags');
-const submitButton = form.querySelector('.img-upload__submit');
 
 let errorMessage = '';
 
@@ -61,35 +56,13 @@ const isValidHashTags = (value) => {
   });
 };
 
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-};
-
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-};
-
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-
-  if (isValid) {
-    blockSubmitButton();
-    sendData(new FormData(evt.target))
-      //.then(closeForm)
-      .catch((err) => {
-        showAlert(err.message);
-      })
-      .finally(unblockSubmitButton);
-  }
-};
-
 const setupValidation = () => {
-  form.addEventListener('submit', onFormSubmit);
   pristine.addValidator(commentInput, isValidComment, `Максимально ${MAX_LENGTH_COMMENT} символов`);
   pristine.addValidator(hashTagsInput, isValidHashTags, getErrorMessage);
 };
 
 const resetValidation = () => pristine.reset();
 
-export { setupValidation, resetValidation };
+const validateForm = () => pristine.validate();
+
+export { setupValidation, validateForm, resetValidation };
