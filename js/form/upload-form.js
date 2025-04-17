@@ -3,23 +3,20 @@ import { setupValidation, validateForm, resetValidation } from './setup-validati
 import { initChangeSizeImage, resetImageSizeValue } from './picture-size-editing.js';
 import { initEffectSlider, resetFilter } from './range-bar-effect.js';
 import { sendData } from '../api.js';
-import { getMessage } from './popups-massages.js';
+import { showErrorMessage, showSuccessMessage } from './popups-messages.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
-const body = document.querySelector('body');
 const closeButton = uploadForm.querySelector('.img-upload__cancel');
 const commentInput = uploadForm.querySelector('.text__description');
 const hashTagInput = uploadForm.querySelector('.text__hashtags');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
-const errorMessage = document.querySelector('#error').content.querySelector('.error');
-const successMessage = document.querySelector('#success').content.querySelector('.success');
 
 const onDocumentKeydown = (evt) => {
   const hasActiveElement = document.activeElement === commentInput || document.activeElement === hashTagInput;
 
-  if (isEscapeKey(evt) && !hasActiveElement) {
+  if (isEscapeKey(evt) && !hasActiveElement && !document.body.classList.contains('error')) {
     evt.preventDefault();
     closeForm();
   }
@@ -27,7 +24,7 @@ const onDocumentKeydown = (evt) => {
 
 const openForm = () => {
   uploadOverlay.classList.remove('hidden');
-  body.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   initEffectSlider();
   initChangeSizeImage();
@@ -35,7 +32,7 @@ const openForm = () => {
 
 function closeForm() {
   uploadOverlay.classList.add('hidden');
-  body.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
 
   uploadInput.value = '';
@@ -68,10 +65,10 @@ const onFormSubmit = (evt) => {
     sendData(new FormData(evt.target))
       .then(() =>{
         closeForm();
-        getMessage(successMessage);
+        showSuccessMessage();
       })
       .catch(() => {
-        getMessage(errorMessage);
+        showErrorMessage();
       })
       .finally(unblockSubmitButton);
   }
