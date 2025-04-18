@@ -56,20 +56,13 @@ const isValidHashTags = (value) => {
   });
 };
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-
-  if (pristine.validate()) {
-    form.submit();
-  }
-};
-
 const setupValidation = () => {
-  form.addEventListener('submit', onFormSubmit);
   pristine.addValidator(commentInput, isValidComment, `Максимально ${MAX_LENGTH_COMMENT} символов`);
   pristine.addValidator(hashTagsInput, isValidHashTags, getErrorMessage);
 };
 
 const resetValidation = () => pristine.reset();
 
-export { setupValidation, resetValidation };
+const validateForm = () => pristine.validate();
+
+export { setupValidation, validateForm, resetValidation };

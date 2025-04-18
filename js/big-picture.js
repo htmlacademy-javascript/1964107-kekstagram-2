@@ -16,19 +16,19 @@ const renderModal = (photo) => {
   bigPicture.querySelector('.big-picture__img img').src = photo.url;
   likesCoint.textContent = photo.likes;
   bigDescription.textContent = photo.description;
-  commentNumber.textContent = photo.comment.length;
+  commentNumber.textContent = photo.comments.length;
 };
 
 const renderComments = (photo) => {
   const socialCommentsFragment = document.createDocumentFragment();
 
-  photo.comment.forEach((comment) => {
+  photo.comments.forEach((comments) => {
     const commentFragment = socialCommentTemplate.cloneNode(true);
     const image = commentFragment.querySelector('.social__picture');
 
-    image.src = comment.avatar;
-    image.alt = comment.name;
-    commentFragment.querySelector('.social__text').textContent = comment.message;
+    image.src = comments.avatar;
+    image.alt = comments.name;
+    commentFragment.querySelector('.social__text').textContent = comments.message;
 
     socialCommentsFragment.appendChild(commentFragment);
   });
