@@ -1,16 +1,18 @@
 const ALERT_SHOW_TIME = 5000;
-
-const getRandomNumber = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-};
-
-const getRandomElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
+const TIME_OUT_DELAY = 500;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const getRandomNumber = () => 0.5 - Math.random();
+
+const debonce = (cb) => {
+  let timeoutId;
+
+  return(...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => cb.apply(this, rest), TIME_OUT_DELAY);
+  };
+};
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -33,4 +35,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {getRandomNumber, getRandomElement, isEscapeKey, showAlert };
+export { isEscapeKey, showAlert, getRandomNumber, debonce };
