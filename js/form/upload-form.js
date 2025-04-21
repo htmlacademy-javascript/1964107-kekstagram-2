@@ -4,6 +4,7 @@ import { initChangeSizeImage, resetImageSizeValue } from './picture-size-editing
 import { initEffectSlider, resetFilter } from './range-bar-effect.js';
 import { sendData } from '../api.js';
 import { showErrorMessage, showSuccessMessage } from './popups-messages.js';
+import { initChoiceImg, clearImgPreview } from './choice-image.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadForm.querySelector('.img-upload__input');
@@ -36,6 +37,7 @@ function closeForm() {
   document.removeEventListener('keydown', onDocumentKeydown);
 
   uploadInput.value = '';
+  clearImgPreview();
   resetImageSizeValue();
   uploadForm.reset();
   resetFilter();
@@ -43,10 +45,6 @@ function closeForm() {
 }
 
 const onButtonClick = () => closeForm();
-
-const onUploadInputChange = () => {
-  openForm();
-};
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -76,9 +74,9 @@ const onFormSubmit = (evt) => {
 
 const initUploadForm = () => {
   uploadForm.addEventListener('submit', onFormSubmit);
-  uploadInput.addEventListener('change', onUploadInputChange);
   closeButton.addEventListener('click', onButtonClick);
   setupValidation();
+  initChoiceImg();
 };
 
-export { initUploadForm, closeForm };
+export { initUploadForm, closeForm, openForm };

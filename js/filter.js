@@ -1,4 +1,4 @@
-import { getRandomNumber, debonce } from './utils';
+import { getRandomNumber, debounce } from './utils.js';
 import { renderThumbnails, clearContainerImages } from './thumbnails.js';
 
 const FILTERS = {
@@ -6,6 +6,7 @@ const FILTERS = {
   random: 'filter-random',
   discussed: 'filter-discussed',
 };
+
 const ACTIVE_BUTTON = 'img-filters__button--active';
 const MAX_COINT_IMAGES = 10;
 
@@ -15,51 +16,54 @@ const filterButton = form.querySelectorAll('.img-filters__button');
 let currentFilter = FILTERS.default;
 let photos = [];
 
-const renderPhotos = debonce((newPictures) => {
+const renderPhotos = (newPictures) => {
   clearContainerImages();
   renderThumbnails(newPictures);
-});
+};
 
-const setFilterImg = (element) => {
+const filterPhotos = () => {
   let filterImg = [];
   const clonePhotos = [...photos];
 
-  switch(element) {
+  switch(currentFilter) {
     case FILTERS.random:
       filterImg = clonePhotos.sort(getRandomNumber).slice(0, MAX_COINT_IMAGES);
       break;
     case FILTERS.discussed:
       filterImg = clonePhotos.sort((a, b) => b.comments.length - a.comments.length);
       break;
-    default:
+    case FILTERS.default:
       filterImg = photos;
       break;
+    default:
+      throw new Error(`Unknown filter type: ${currentFilter}`);
   }
 
   renderPhotos(filterImg);
 };
 
+const filterPhotosWithDebounce = debounce(filterPhotos);
+
 const onFilterClick = (evt) => {
   const targetButton = evt.target.closest('button');
 
-  if (!targetButton || targetButton.id === currentFilter) {
+  if (!targetButton) {
     return;
   }
 
   filterButton.forEach((element) => element.classList.remove(`${ACTIVE_BUTTON}`));
-
   const activeFilter = targetButton.id;
   targetButton.classList.add(`${ACTIVE_BUTTON}`);
   currentFilter = activeFilter;
 
-  setFilterImg(currentFilter);
+  filterPhotosWithDebounce();
 };
 
-const initSortImg = (element) => {
+const initFilterImg = (elements) => {
   form.classList.remove('img-filters--inactive');
   form.addEventListener('click', onFilterClick);
-  photos = [...element];
+  photos = [...elements];
 };
 
-export { initSortImg };
+export { initFilterImg };
 

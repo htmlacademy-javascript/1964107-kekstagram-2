@@ -5,10 +5,10 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const getRandomNumber = () => 0.5 - Math.random();
 
-const debonce = (cb) => {
+const debounce = (cb) => {
   let timeoutId;
 
-  return(...rest) => {
+  return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => cb.apply(this, rest), TIME_OUT_DELAY);
   };
@@ -35,4 +35,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export { isEscapeKey, showAlert, getRandomNumber, debonce };
+export { isEscapeKey, showAlert, getRandomNumber, debounce };
