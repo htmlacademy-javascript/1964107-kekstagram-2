@@ -1,5 +1,11 @@
+
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const container = document.querySelector('.pictures');
+
+const clearContainerImages = () => {
+  const rendersImages = container.querySelectorAll('.picture');
+  rendersImages.forEach((element) => element.remove());
+};
 
 const createThumbnail = ({ comments, description, likes, url, id}) => {
   const thumbnail = template.cloneNode(true);
@@ -25,4 +31,4 @@ const renderThumbnails = (pictures) => {
   container.append(fragment);
 };
 
-export { renderThumbnails };
+export { renderThumbnails, clearContainerImages };
