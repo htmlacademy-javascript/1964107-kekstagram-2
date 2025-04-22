@@ -1,4 +1,7 @@
-import { isEscapeKey } from './utils';
+import { isEscapeKey } from './utils.js';
+import { renderComments } from './render-comments.js';
+
+const COMMENTS_COINT_STEP = 5;
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureClose = document.querySelector('#picture-cancel');
@@ -6,34 +9,20 @@ const container = document.querySelector('.pictures');
 const body = document.querySelector('body');
 const likesCoint = bigPicture.querySelector('.likes-count');
 const bigDescription = bigPicture.querySelector('.social__caption');
-const socialHidden = bigPicture.querySelector('.social__comment-count');
-const commentHidden = bigPicture.querySelector('.comments-loader');
+const socialCommentsCoint = bigPicture.querySelector('.social__comment-count');
+const commentsButton = bigPicture.querySelector('.social__comments-loader');
 const commentNumber = bigPicture.querySelector('.social__comment-total-count');
-const socialCommentTemplate = bigPicture.querySelector('.social__comment');
 const commentsContainer = bigPicture.querySelector('.social__comments');
+const socialShowCount = bigPicture.querySelector('.social__comment-shown-count');
+
+let commentsList = [];
+let count = 5;
 
 const renderModal = (photo) => {
   bigPicture.querySelector('.big-picture__img img').src = photo.url;
   likesCoint.textContent = photo.likes;
   bigDescription.textContent = photo.description;
   commentNumber.textContent = photo.comments.length;
-};
-
-const renderComments = (photo) => {
-  const socialCommentsFragment = document.createDocumentFragment();
-
-  photo.comments.forEach((comments) => {
-    const commentFragment = socialCommentTemplate.cloneNode(true);
-    const image = commentFragment.querySelector('.social__picture');
-
-    image.src = comments.avatar;
-    image.alt = comments.name;
-    commentFragment.querySelector('.social__text').textContent = comments.message;
-
-    socialCommentsFragment.appendChild(commentFragment);
-  });
-
-  commentsContainer.append(socialCommentsFragment);
 };
 
 const onDocumentKeydown = (evt) => {
@@ -48,8 +37,6 @@ const openModal = (photo) => {
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
   renderModal(photo);
-  socialHidden.classList.add('hidden');
-  commentHidden.classList.add('hidden');
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
@@ -57,6 +44,10 @@ const openModal = (photo) => {
 function closeModalUser () {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
+  commentsButton.classList.add('hidden');
+  socialCommentsCoint.classList.add('hidden');
+  socialShowCount.textContent = 5;
+  count = 5;
 
   document.removeEventListener('keydown', onDocumentKeydown);
 }
@@ -76,13 +67,40 @@ const onPictureContainerClick = (evt, photos) => {
     return;
   }
 
-  renderComments(currentPhoto);
+  commentsList = currentPhoto.comments;
+
+  if (commentsList.length > COMMENTS_COINT_STEP) {
+    commentsButton.classList.remove('hidden');
+    socialCommentsCoint.classList.remove('hidden');
+    const comments = commentsList.slice(0, COMMENTS_COINT_STEP);
+    renderComments(comments);
+  } else {
+    renderComments(commentsList);
+  }
+
   openModal(currentPhoto);
+};
+
+const onButtonClick = (comments, evt) => {
+  evt.target.closest('button');
+  const commentsPaint = comments.slice(count, count + COMMENTS_COINT_STEP);
+  count += COMMENTS_COINT_STEP;
+  socialShowCount.textContent = count;
+
+  if (socialShowCount.textContent >= commentNumber.textContent) {
+    commentsButton.classList.add('hidden');
+    socialCommentsCoint.classList.add('hidden');
+  }
+
+  renderComments(commentsPaint);
 };
 
 const initPreviewPictures = (photos) => {
   container.addEventListener('click', (evt) => onPictureContainerClick (evt, photos));
   bigPictureClose.addEventListener('click', () => closeModalUser());
+  commentsButton.addEventListener('click', (evt) => onButtonClick(commentsList, evt));
+  commentsButton.classList.add('hidden');
+  socialCommentsCoint.classList.add('hidden');
 };
 
 export { initPreviewPictures };
