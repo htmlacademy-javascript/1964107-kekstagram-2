@@ -39,6 +39,7 @@ const updateEffect = () => {
 };
 
 const onSliderEffect = (evt) => {
+  effectLevelValue.value = 0;
   const target = evt.target;
 
   if(!target){
