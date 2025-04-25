@@ -8,10 +8,10 @@ const FILTERS = {
 };
 
 const ACTIVE_BUTTON = 'img-filters__button--active';
-const MAX_COINT_IMAGES = 10;
+const MAX_COUNT_IMAGES = 10;
 
 const form = document.querySelector('.img-filters');
-const filterButton = form.querySelectorAll('.img-filters__button');
+const filterButtons = form.querySelectorAll('.img-filters__button');
 
 let currentFilter = FILTERS.default;
 let photos = [];
@@ -22,24 +22,24 @@ const renderPhotos = (newPictures) => {
 };
 
 const filterPhotos = () => {
-  let filterImg = [];
+  let filterImages = [];
   const clonePhotos = [...photos];
 
   switch(currentFilter) {
     case FILTERS.random:
-      filterImg = clonePhotos.sort(getRandomNumber).slice(0, MAX_COINT_IMAGES);
+      filterImages = clonePhotos.sort(getRandomNumber).slice(0, MAX_COUNT_IMAGES);
       break;
     case FILTERS.discussed:
-      filterImg = clonePhotos.sort((a, b) => b.comments.length - a.comments.length);
+      filterImages = clonePhotos.sort((a, b) => b.comments.length - a.comments.length);
       break;
     case FILTERS.default:
-      filterImg = photos;
+      filterImages = photos;
       break;
     default:
       throw new Error(`Unknown filter type: ${currentFilter}`);
   }
 
-  renderPhotos(filterImg);
+  renderPhotos(filterImages);
 };
 
 const filterPhotosWithDebounce = debounce(filterPhotos);
@@ -51,7 +51,7 @@ const onFilterClick = (evt) => {
     return;
   }
 
-  filterButton.forEach((element) => element.classList.remove(`${ACTIVE_BUTTON}`));
+  filterButtons.forEach((button) => button.classList.remove(`${ACTIVE_BUTTON}`));
   const activeFilter = targetButton.id;
   targetButton.classList.add(`${ACTIVE_BUTTON}`);
   currentFilter = activeFilter;
